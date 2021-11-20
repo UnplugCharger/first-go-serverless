@@ -5,4 +5,4 @@ learning outcomes
 3. DYNAMODB
 
 
-![](flowchart)
+![](https://github.com/UnplugCharger/first-go-serverless/blob/master/flowchart)
