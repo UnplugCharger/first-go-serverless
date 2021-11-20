@@ -12,3 +12,11 @@ func CreateUser()  {
 func UpdateUser()  {
 	
 }
+
+func DeleteUser()  {
+	
+}
+
+func UnhandledMethod()  {
+	
+}
