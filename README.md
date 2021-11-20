@@ -6,6 +6,6 @@ learning outcomes
 
 
 
-![alt text](https://github.com/UnplugCharger/first-go-serverless/blob/master/flowchart?raw=true)
+![alt text](https://github.com/UnplugCharger/first-go-serverless/blob/master/flowchart.png?raw=true)
 
 
