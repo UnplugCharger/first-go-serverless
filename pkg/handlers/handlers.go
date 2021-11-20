@@ -1,22 +1,55 @@
 package handlers
 
+import (
+	"net/http"
 
-func GetUser()  {
-	
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/byron/serverless/pkg/users"
+)
+
+var ErrorMethodNotAllowed = "method not allowed "
+
+type ErrorBody struct {
+	ErrorMessage *string `json:"error,omitempty"`
 }
 
-func CreateUser()  {
-	
+func GetUser(req events.APIGatewayProxyRequest, tablename string, dynaClient dynamodbiface.DynamoDBAPI) (
+	*events.APIGatewayProxyResponse, error) {
+   email := req.QueryStringParameters["email"]
+   if len(email)>0{
+	  result , err :=  users.FetchUser(email,tablename,dynaClient)
+
+	  if err != nil {
+		  return apiResponse(http.StatusBadRequest, ErrorBody{aws.String(err.Error())})
+	  }
+	  return apiResponse(http.StatusOK, result)
+   }
+   result , err := users.FetchUsers(tablename,dynaClient)
+
+   if err != nil {
+	return apiResponse(http.StatusBadRequest, ErrorBody{aws.String(err.Error())})
+   }
+   return apiResponse(http.StatusOK,result)
+
 }
 
-func UpdateUser()  {
-	
+func CreateUser(req events.APIGatewayProxyRequest, tablename string , dynaClient dynamodbiface.DynamoDBAPI)(
+	*events.APIGatewayProxyResponse,error) {
+
 }
 
-func DeleteUser()  {
-	
+func UpdateUser(req events.APIGatewayProxyRequest,tablename string , dynaClient dynamodbiface.DynamoDBAPI)(
+     *events.APIGatewayProxyResponse, error) {
+
 }
 
-func UnhandledMethod()  {
-	
+func DeleteUser(req events.APIGatewayProxyRequest,tablename string , dynaClient dynamodbiface.DynamoDBAPI)(
+	*events.APIGatewayProxyResponse, error) {
+
+}
+
+func UnhandledMethod() (*events.APIGatewayProxyResponse, error) {
+	return apiResponse(http.StatusMethodNotAllowed, ErrorMethodNotAllowed)
 }
